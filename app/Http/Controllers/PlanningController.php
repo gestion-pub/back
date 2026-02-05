@@ -14,7 +14,7 @@ class PlanningController extends Controller
      */
     public function index()
     {
-        return response()->json(Planning::latest()->paginate(15));
+        return response()->json(Planning::with('campagne')->latest()->paginate(15));
     }
 
     /**
@@ -89,6 +89,7 @@ class PlanningController extends Controller
             'duree' => 'sometimes|integer|min:1',
             'prix_HT' => 'sometimes|numeric|min:0',
             'id_campagne' => 'sometimes|exists:campagnes,id',
+            'status' => 'sometimes|in:réservé,programmé',
         ]);
 
         $planning->update($validated);

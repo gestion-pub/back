@@ -14,8 +14,8 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        // BEGIN: implemented listing with pagination
-        $categories = Categorie::paginate(15);
+        // BEGIN: implemented listing
+        $categories = Categorie::all();
         return response()->json($categories);
         // END
     }
@@ -42,8 +42,7 @@ class CategorieController extends Controller
     {
         // BEGIN: validate and create
         $validated = $request->validate([
-            'nom' => 'required|string|max:255|unique:categories,nom',
-            'description' => 'nullable|string',
+            'nom_categorie' => 'required|string|max:255|unique:categories,nom_categorie',
         ]);
 
         $categorie = Categorie::create($validated);
@@ -89,8 +88,8 @@ class CategorieController extends Controller
     {
         // BEGIN: validate and update
         $validated = $request->validate([
-            'nom' => 'required|string|max:255|unique:categories,name,' . $id,
-           
+            'nom_categorie' => 'required|string|max:255|unique:categories,nom_categorie,' . $id,
+
         ]);
 
         $categorie = Categorie::findOrFail($id);

@@ -12,14 +12,8 @@ return new class extends Migration {
      */
     public function up()
     {
-        // Ensure the old singular table is removed if it exists
-        Schema::dropIfExists('categorie');
-
-        // Create the categories table (plural)
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom_categorie');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('role')->default('commercial')->after('email');
         });
     }
 
@@ -30,6 +24,8 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role');
+        });
     }
 };

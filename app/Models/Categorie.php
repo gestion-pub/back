@@ -9,7 +9,10 @@ class Categorie extends Model
 {
     use HasFactory;
 
-    public function campagne(){
-        return $this->hasMany(Campagne::class,'id_categorie');
+    protected $fillable = ['nom_categorie'];
+
+    public function campagne()
+    {
+        return $this->hasMany(Campagne::class, 'id_categorie');
     }
 }

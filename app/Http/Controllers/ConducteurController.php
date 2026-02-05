@@ -3,66 +3,82 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Conducteur;
+use App\Models\ConducteurSlot;
 
 class ConducteurController extends Controller
 {
-    // Display a listing of the resource.
     public function index()
     {
-        return response()->json(['message' => 'List conducteurs']);
+        $conducteurs = Conducteur::with('slots.campagne')->latest()->get();
+        return response()->json($conducteurs);
     }
 
-    // Show the form for creating a new resource.
-    public function create()
-    {
-        return response()->json(['message' => 'Show create conducteur form']);
-    }
-
-    // Store a newly created resource in storage.
     public function store(Request $request)
     {
-        // Basic validation updated to match migration schema
         $validated = $request->validate([
-            'heures' => 'required|date_format:H:i',
-            'campagnes' => 'required|string|max:255',
-            'spots' => 'required|string|max:255',
-            'duree' => 'required|integer',
-            'numero' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'date' => 'required|date',
+            'status' => 'required|in:draft,published',
+            'slots' => 'array',
+            'slots.*.time_slot' => 'required|string',
+            'slots.*.campagne_id' => 'nullable|exists:campagnes,id',
         ]);
 
-        return response()->json(['message' => 'Conducteur created', 'data' => $validated], 201);
-    }
-
-    // Display the specified resource.
-    public function show(string $id)
-    {
-        return response()->json(['message' => 'Show conducteur', 'id' => $id]);
-    }
-
-    // Show the form for editing the specified resource.
-    public function edit(string $id)
-    {
-        return response()->json(['message' => 'Show edit conducteur form', 'id' => $id]);
-    }
-
-    // Update the specified resource in storage.
-    public function update(Request $request, string $id)
-    {
-        // Basic validation updated to match migration schema
-        $validated = $request->validate([
-            'heures' => 'sometimes|date_format:H:i',
-            'campagnes' => 'sometimes|string|max:255',
-            'spots' => 'sometimes|string|max:255',
-            'duree' => 'sometimes|integer',
-            'numero' => 'sometimes|string|max:255',
+        $conducteur = Conducteur::create([
+            'name' => $validated['name'],
+            'date' => $validated['date'],
+            'status' => $validated['status'],
         ]);
 
-        return response()->json(['message' => 'Conducteur updated', 'id' => $id, 'data' => $validated]);
+        if (isset($validated['slots'])) {
+            foreach ($validated['slots'] as $slotData) {
+                $conducteur->slots()->create($slotData);
+            }
+        }
+
+        return response()->json($conducteur->load('slots.campagne'), 201);
     }
 
-    // Remove the specified resource from storage.
-    public function destroy(string $id)
+    public function show($id)
     {
-        return response()->json(['message' => 'Conducteur deleted', 'id' => $id]);
+        $conducteur = Conducteur::with('slots.campagne')->findOrFail($id);
+        return response()->json($conducteur);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $conducteur = Conducteur::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'string|max:255',
+            'date' => 'date',
+            'status' => 'in:draft,published',
+            'slots' => 'array',
+            'slots.*.id' => 'nullable|exists:conducteur_slots,id',
+            'slots.*.time_slot' => 'required|string',
+            'slots.*.campagne_id' => 'nullable|exists:campagnes,id',
+        ]);
+
+        $conducteur->update($validated);
+
+        if (isset($validated['slots'])) {
+            // Delete existing slots
+            $conducteur->slots()->delete();
+
+            // Create new slots
+            foreach ($validated['slots'] as $slotData) {
+                $conducteur->slots()->create($slotData);
+            }
+        }
+
+        return response()->json($conducteur->load('slots.campagne'));
+    }
+
+    public function destroy($id)
+    {
+        $conducteur = Conducteur::findOrFail($id);
+        $conducteur->delete();
+        return response()->json(null, 204);
     }
 }

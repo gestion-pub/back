@@ -9,14 +9,19 @@ class Campagne extends Model
 {
     use HasFactory;
 
-    public function client(){
-        return $this->belongsTo(Client::class,'id_client');
+    protected $guarded = [];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'id_client');
     }
-    public function categorie(){
-        return $this->belongsTo(Categorie::class,'id_categorie');
+    public function categorie()
+    {
+        return $this->belongsTo(Categorie::class, 'id_categorie');
     }
-    public function planning(){
-        return $this->belongsTo(Planning::class,'id_planning');
+    public function planning()
+    {
+        return $this->belongsTo(Planning::class, 'id_planning');
     }
 
 }

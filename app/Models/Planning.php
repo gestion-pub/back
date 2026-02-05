@@ -9,10 +9,22 @@ class Planning extends Model
 {
     use HasFactory;
 
-    public function campagne(){
-        return $this->hasMany(Campagne::class,'id_planning');
+    protected $fillable = [
+        'date',
+        'heure',
+        'spot',
+        'duree',
+        'prix_HT',
+        'id_campagne',
+        'status'
+    ];
+
+    public function campagne()
+    {
+        return $this->belongsTo(Campagne::class, 'id_campagne');
     }
-    public function client(){
-        return $this->hasMany(Client::class,'id_client');
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'id_client'); // Check if this is correct, usually planning belongs to a campagne which belongs to a client
     }
 }

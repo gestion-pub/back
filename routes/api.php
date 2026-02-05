@@ -19,7 +19,7 @@ use App\Http\Controllers\CategorieController;
 */
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login',    [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
@@ -43,6 +43,8 @@ Route::get('/roles', [RoleController::class, 'index']);
 Route::resource('categories', CategorieController::class);
 Route::resource('clients', ClientController::class);
 Route::resource('campagnes', CampagneController::class);
+Route::resource('conducteurs', App\Http\Controllers\ConducteurController::class);
+Route::resource('plannings', App\Http\Controllers\PlanningController::class);
 
 
 Route::middleware(['auth:sanctum', 'permission:manage_roles'])->group(function () {
@@ -54,6 +56,9 @@ Route::middleware(['auth:sanctum', 'permission:manage_roles'])->group(function (
     Route::post('/permissions', [PermissionController::class, 'store']);
 
 });
+Route::post('/users', [\App\Http\Controllers\Auth\AuthController::class, 'createUser']);
+Route::put('/users/{id}', [\App\Http\Controllers\Auth\AuthController::class, 'updateUser']);
+Route::delete('/users/{id}', [\App\Http\Controllers\Auth\AuthController::class, 'deleteUser']);
 Route::get('/users', function () {
-    return App\Models\User::select('id','name','email','role')->get();
+    return \App\Models\User::select('id', 'name', 'email', 'role')->get();
 });
