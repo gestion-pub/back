@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Conducteur;
 use App\Models\ConducteurSlot;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ConducteurExport;
+use Illuminate\Support\Facades\Log;
 
 class ConducteurController extends Controller
 {
     public function index()
     {
-        $conducteurs = Conducteur::with('slots.campagne')->latest()->get();
+        $conducteurs = Conducteur::with('slots.campagne.client', 'slots.campagne.categorie')->latest()->get();
         return response()->json($conducteurs);
     }
 
@@ -42,7 +45,7 @@ class ConducteurController extends Controller
 
     public function show($id)
     {
-        $conducteur = Conducteur::with('slots.campagne')->findOrFail($id);
+        $conducteur = Conducteur::with('slots.campagne.client', 'slots.campagne.categorie')->findOrFail($id);
         return response()->json($conducteur);
     }
 
@@ -80,5 +83,15 @@ class ConducteurController extends Controller
         $conducteur = Conducteur::findOrFail($id);
         $conducteur->delete();
         return response()->json(null, 204);
+    }
+
+    public function export($id)
+    {
+        try {
+            return Excel::download(new ConducteurExport($id), 'conducteur.xlsx');
+        } catch (\Exception $e) {
+            Log::error('Conducteur Export Error: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
     }
 }

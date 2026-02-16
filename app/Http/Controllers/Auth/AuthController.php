@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -43,6 +44,12 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
+        // Sync with RBAC roles
+        $role = Role::where('slug', $request->role)->first();
+        if ($role) {
+            $user->roles()->sync([$role->id]);
+        }
+
         return response()->json($user);
     }
 
@@ -69,6 +76,14 @@ class AuthController extends Controller
 
         $user->update($userData);
 
+        // Sync with RBAC roles if role was updated
+        if ($request->has('role')) {
+            $role = Role::where('slug', $request->role)->first();
+            if ($role) {
+                $user->roles()->sync([$role->id]);
+            }
+        }
+
         return response()->json($user);
     }
 
@@ -81,14 +96,23 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        \Illuminate\Support\Facades\Log::info('Login attempt for: ' . $request->email);
+
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
+            \Illuminate\Support\Facades\Log::warning('Login failed for: ' . $request->email);
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
+        \Illuminate\Support\Facades\Log::info('Login successful for: ' . $request->email);
         return $user->createToken('auth_token')->plainTextToken;
     }
 

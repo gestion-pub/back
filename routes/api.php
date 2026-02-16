@@ -4,8 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\CampagneController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,19 +42,28 @@ Route::middleware(['auth:sanctum', 'permission:create_sales'])->post('/ventes', 
     // create vente
 });
 Route::get('/roles', [RoleController::class, 'index']);
+Route::get('/permissions', [PermissionController::class, 'index']);
 Route::resource('categories', CategorieController::class);
 Route::resource('clients', ClientController::class);
 Route::resource('campagnes', CampagneController::class);
 Route::resource('conducteurs', App\Http\Controllers\ConducteurController::class);
+Route::get('/conducteurs/{id}/export', [App\Http\Controllers\ConducteurController::class, 'export']);
+
+Route::get('/plannings/campaign/{id}', [App\Http\Controllers\PlanningController::class, 'getByCampaign']);
+Route::post('/plannings/bulk', [App\Http\Controllers\PlanningController::class, 'bulkStore']);
 Route::resource('plannings', App\Http\Controllers\PlanningController::class);
+Route::post('/plannings/analyze', [App\Http\Controllers\PlanningController::class, 'uploadAndAnalyze']);
+Route::get('/plannings/export/{campaignId}', [App\Http\Controllers\PlanningController::class, 'export']);
+
 
 
 Route::middleware(['auth:sanctum', 'permission:manage_roles'])->group(function () {
 
     Route::post('/roles', [RoleController::class, 'store']);
+    Route::put('/roles/{role}', [RoleController::class, 'update']);
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy']);
     Route::post('/roles/{role}/permissions', [RoleController::class, 'attachPermissions']);
 
-    Route::get('/permissions', [PermissionController::class, 'index']);
     Route::post('/permissions', [PermissionController::class, 'store']);
 
 });

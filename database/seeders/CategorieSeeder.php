@@ -15,12 +15,6 @@ class CategorieSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('categories')->insert([
-            ['nom' => 'Action',  'created_at' => now(), 'updated_at' => now()],
-            ['nom' => 'Aventure','created_at' => now(), 'updated_at' => now()],
-            ['nom' => 'Comédie', 'created_at' => now(), 'updated_at' => now()],
-            ['nom' => 'Drame',   'created_at' => now(), 'updated_at' => now()],
-            ['nom' => 'Horreur', 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        // Removed default categories as requested
     }
 }
