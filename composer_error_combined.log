@@ -1,0 +1,303 @@
+﻿composer : Loading 
+composer 
+repositories with 
+package information
+Au caractère Ligne:1 
+: 1
++ composer update 
+--no-scripts 
+--no-interaction 
+--verbose 2>&1 | 
+Out-Fi ...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (Loading   
+  compose...age i    
+nformation:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+Updating dependencies
+Dependency 
+resolution completed 
+in 0.010 seconds
+Your requirements 
+could not be 
+resolved to an 
+installable set of 
+packages.
+
+  Problem 1
+    - Root 
+composer.json 
+requires 
+maatwebsite/excel 
+^3.1 -> satisfiable 
+by maatwebsite/excel[
+3.1.0, 3.1.1, 3.1.2, 
+3.1.3, 3.1.4, 3.1.5, 
+3.1.6, 3.1.7, 3.1.8, 
+3.1.9, 3.1.10, 
+3.1.11, 3.1.12, 
+3.1.13, 3.1.14, 
+3.1.15, 3.1.16, 
+3.1.17, 3.1.18, 
+3.1.19, 3.1.20, 
+3.1.21, 3.1.22, 
+3.1.23, 3.1.24, 
+3.1.25, 3.1.26, 
+3.1.27, 3.1.28, 
+3.1.29, 3.1.30, 
+3.1.31, 3.1.32, 
+3.1.33, 3.1.34, 
+3.1.35, 3.1.36, 
+3.1.37, 3.1.38, 
+3.1.39, 3.1.40, 
+3.1.41, 3.1.42, 
+3.1.43, 3.1.44, 
+3.1.45, 3.1.46, 
+3.1.47, 3.1.48, 
+3.1.49, 3.1.50, 
+3.1.51, 3.1.52, 
+3.1.53, 3.1.54, 
+3.1.55, 3.1.56, 
+3.1.57, 3.1.58, 
+3.1.59, 3.1.60, 
+3.1.61, 3.1.62, 
+3.1.63, 3.1.64, 
+3.1.65, 3.1.66, 
+3.1.67].
+    - maatwebsite/exc
+el[3.1.0, 3.1.1, 
+3.1.2, 3.1.3, 3.1.4, 
+3.1.5, 3.1.6, 3.1.7, 
+3.1.8, 3.1.9, 
+3.1.10, 3.1.11, 
+3.1.12, 3.1.13, 
+3.1.14, 3.1.15, 
+3.1.16, 3.1.17, 
+3.1.18, 3.1.19, 
+3.1.20, 3.1.21, 
+3.1.22, 3.1.23, 
+3.1.24, 3.1.25] 
+require php ^7.0 -> 
+your php version 
+(8.0.30) does not 
+satisfy that 
+requirement.
+    - 
+maatwebsite/excel 
+3.1.26 requires phpof
+fice/phpspreadsheet 
+^1.15 -> satisfiable 
+by phpoffice/phpsprea
+dsheet[1.15.0, 
+1.16.0, 1.17.0, 
+1.17.1, 1.18.0, 
+1.19.0, 1.20.0, 
+1.21.0, 1.22.0, 
+1.23.0, 1.24.0, 
+1.24.1, 1.25.0, 
+1.25.1, 1.25.2, 
+1.26.0, 1.27.0, 
+1.27.1, 1.28.0, 
+1.29.0, 1.29.1, 
+1.29.2, 1.29.4, 
+1.29.5, 1.29.6, 
+1.29.7, 1.29.8, 
+1.29.9, 1.29.10, 
+1.29.11, 1.29.12, 
+1.30.0, 1.30.1, 
+1.30.2].
+    - 
+maatwebsite/excel 
+3.1.27 requires phpof
+fice/phpspreadsheet 
+^1.16 -> satisfiable 
+by phpoffice/phpsprea
+dsheet[1.16.0, 
+1.17.0, 1.17.1, 
+1.18.0, 1.19.0, 
+1.20.0, 1.21.0, 
+1.22.0, 1.23.0, 
+1.24.0, 1.24.1, 
+1.25.0, 1.25.1, 
+1.25.2, 1.26.0, 
+1.27.0, 1.27.1, 
+1.28.0, 1.29.0, 
+1.29.1, 1.29.2, 
+1.29.4, 1.29.5, 
+1.29.6, 1.29.7, 
+1.29.8, 1.29.9, 
+1.29.10, 1.29.11, 
+1.29.12, 1.30.0, 
+1.30.1, 1.30.2].
+    - maatwebsite/exc
+el[3.1.28, 3.1.29, 
+3.1.30] require phpof
+fice/phpspreadsheet 
+1.16.* -> 
+satisfiable by phpoff
+ice/phpspreadsheet[1.
+16.0].
+    - maatwebsite/exc
+el[3.1.31, 3.1.32, 
+3.1.33, 3.1.34, 
+3.1.35, 3.1.36, 
+3.1.37, 3.1.38, 
+3.1.39, 3.1.40, 
+3.1.41, 3.1.42, 
+3.1.43, 3.1.44, 
+3.1.45, 3.1.46, 
+3.1.47, 3.1.48, 
+3.1.49, 3.1.50, 
+3.1.51, 3.1.52, 
+3.1.53, 3.1.54, 
+3.1.55, 3.1.56] 
+require phpoffice/php
+spreadsheet ^1.18 -> 
+satisfiable by phpoff
+ice/phpspreadsheet[1.
+18.0, 1.19.0, 
+1.20.0, 1.21.0, 
+1.22.0, 1.23.0, 
+1.24.0, 1.24.1, 
+1.25.0, 1.25.1, 
+1.25.2, 1.26.0, 
+1.27.0, 1.27.1, 
+1.28.0, 1.29.0, 
+1.29.1, 1.29.2, 
+1.29.4, 1.29.5, 
+1.29.6, 1.29.7, 
+1.29.8, 1.29.9, 
+1.29.10, 1.29.11, 
+1.29.12, 1.30.0, 
+1.30.1, 1.30.2].
+    - maatwebsite/exc
+el[3.1.57, 3.1.58] 
+require phpoffice/php
+spreadsheet ^1.29.1 
+-> satisfiable by php
+office/phpspreadsheet
+[1.29.1, 1.29.2, 
+1.29.4, 1.29.5, 
+1.29.6, 1.29.7, 
+1.29.8, 1.29.9, 
+1.29.10, 1.29.11, 
+1.29.12, 1.30.0, 
+1.30.1, 1.30.2].
+    - 
+maatwebsite/excel 
+3.1.59 requires phpof
+fice/phpspreadsheet 
+^1.29.2 -> 
+satisfiable by phpoff
+ice/phpspreadsheet[1.
+29.2, 1.29.4, 
+1.29.5, 1.29.6, 
+1.29.7, 1.29.8, 
+1.29.9, 1.29.10, 
+1.29.11, 1.29.12, 
+1.30.0, 1.30.1, 
+1.30.2].
+    - maatwebsite/exc
+el[3.1.60, 3.1.61] 
+require phpoffice/php
+spreadsheet ^1.29.4 
+-> satisfiable by php
+office/phpspreadsheet
+[1.29.4, 1.29.5, 
+1.29.6, 1.29.7, 
+1.29.8, 1.29.9, 
+1.29.10, 1.29.11, 
+1.29.12, 1.30.0, 
+1.30.1, 1.30.2].
+    - 
+maatwebsite/excel 
+3.1.62 requires phpof
+fice/phpspreadsheet 
+^1.29.7 -> 
+satisfiable by phpoff
+ice/phpspreadsheet[1.
+29.7, 1.29.8, 
+1.29.9, 1.29.10, 
+1.29.11, 1.29.12, 
+1.30.0, 1.30.1, 
+1.30.2].
+    - maatwebsite/exc
+el[3.1.63, 3.1.64] 
+require phpoffice/php
+spreadsheet ^1.29.9 
+-> satisfiable by php
+office/phpspreadsheet
+[1.29.9, 1.29.10, 
+1.29.11, 1.29.12, 
+1.30.0, 1.30.1, 
+1.30.2].
+    - maatwebsite/exc
+el[3.1.65, 3.1.66] 
+require phpoffice/php
+spreadsheet ^1.29.12 
+-> satisfiable by php
+office/phpspreadsheet
+[1.29.12, 1.30.0, 
+1.30.1, 1.30.2].
+    - 
+maatwebsite/excel 
+3.1.67 requires phpof
+fice/phpspreadsheet 
+^1.30.0 -> 
+satisfiable by phpoff
+ice/phpspreadsheet[1.
+30.0, 1.30.1, 
+1.30.2].
+    - phpoffice/phpsp
+readsheet[1.15.0, 
+1.16.0, 1.17.0, 
+1.17.1, 1.18.0, 
+1.19.0, 1.20.0, 
+1.21.0, 1.22.0, 
+1.23.0, 1.24.0, 
+1.24.1, 1.25.0, 
+1.25.1, 1.25.2, 
+1.26.0, 1.27.0, 
+1.27.1, 1.28.0, 
+1.29.0, 1.29.1, 
+1.29.2, 1.29.4, 
+1.29.5, 1.29.6, 
+1.29.7, 1.29.8, 
+1.29.9, 1.29.10, 
+1.29.11, 1.29.12, 
+1.30.0, 1.30.1, 
+1.30.2] require 
+ext-gd * -> it is 
+missing from your 
+system. Install or 
+enable PHP's gd 
+extension.
+
+To enable 
+extensions, verify 
+that they are 
+enabled in your .ini 
+files:
+    - 
+C:\xampp\php\php.ini
+You can also run 
+`php --ini` in a 
+terminal to see 
+which files are used 
+by PHP in CLI mode.
+Alternatively, you 
+can run Composer 
+with `--ignore-platfo
+rm-req=ext-gd` to 
+temporarily ignore 
+these required 
+extensions.

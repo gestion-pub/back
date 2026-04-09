@@ -28,12 +28,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
           Schema::defaultStringLength(191);
-
-    if (Type::hasType('enum') === false) {
-        Type::addType('enum', \Doctrine\DBAL\Types\StringType::class);
-    }
-
-    $platform = \DB::getDoctrineConnection()->getDatabasePlatform();
-    $platform->registerDoctrineTypeMapping('enum', 'string');
     }
 }

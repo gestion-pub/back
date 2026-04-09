@@ -1,0 +1,1 @@
+{"campagnes":["id","date_debut","date_fin","type","ranking","spot","duree","spot_id","spots","id_client","id_categorie","created_at","updated_at","created_by"],"plannings":["id","date","heure","spot","duree","prix_HT","id_campagne","status","created_at","updated_at"]}

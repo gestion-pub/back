@@ -15,6 +15,7 @@ class PlanningController extends Controller
     public function uploadAndAnalyze(Request $request)
     {
         set_time_limit(300); // 5 minutes max
+        Log::info('--- Starting uploadAndAnalyze ---');
         Log::info('Upload Request Data:', $request->all());
         Log::info('Upload Files:', $request->allFiles());
 
@@ -25,9 +26,11 @@ class PlanningController extends Controller
 
         $file = $request->file('scan');
         $extension = strtolower($file->getClientOriginalExtension());
+        Log::info("File extension detected: $extension");
 
         // --- CAS 1 : EXCEL / CSV (Matrix Parsing) ---
         if (in_array($extension, ['xlsx', 'xls', 'csv'])) {
+            Log::info("Entering CAS 1: Excel/CSV parsing");
             try {
                 $array = Excel::toArray(new PlanningsImport, $file);
                 $rows = $array[0];
@@ -197,6 +200,8 @@ class PlanningController extends Controller
                 ]);
 
             } catch (\Exception $e) {
+                Log::error('Error in CAS 1 (Excel): ' . $e->getMessage());
+                Log::error($e->getTraceAsString());
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Erreur lors de la lecture du fichier Excel: ' . $e->getMessage()
@@ -206,11 +211,19 @@ class PlanningController extends Controller
 
         // --- CAS 2 : PDF / IMAGES (Lecture par IA) ---
         else {
-            $apiUrl = env('PYTHON_API_URL') . '/analyser';
+            $apiUrl = env('OCR_SERVICE_URL');
+            if (!str_ends_with($apiUrl, '/analyser')) {
+                $apiUrl .= '/analyser';
+            }
+            Log::info("Target AI API URL: $apiUrl");
             try {
                 $response = Http::timeout(300) // Increase internal timeout to 5 mins
                     ->attach('file', file_get_contents($file), $file->getClientOriginalName())
                     ->post($apiUrl);
+
+                if (!$response->successful()) {
+                     Log::error("AI Service Error Response: " . $response->body());
+                }
 
                 $aiData = $response->json();
                 Log::info('AI Response Payload Summary:', [
@@ -455,7 +468,7 @@ class PlanningController extends Controller
             if (!$rawDate) {
                 $rawDate = $entry['colonne'] ?? ($entry['d'] ?? ($entry['date'] ?? ($entry['day'] ?? ($entry['jour'] ?? ''))));
             }
-            $rawHour = $entry['heure'] ?? ($entry['heures'] ?? ($entry['h'] ?? ($entry['hour'] ?? ($entry['time'] ?? ''))));
+            $rawHour = $entry['hours'] ?? ($entry['heure'] ?? ($entry['heures'] ?? ($entry['h'] ?? ($entry['hour'] ?? ($entry['time'] ?? '')))));
 
             if (isset($entry['jours']) && is_array($entry['jours'])) {
                 $rawDates = $entry['jours'];
@@ -678,6 +691,35 @@ class PlanningController extends Controller
             return Excel::download(new PlanningExport($campaignId), 'planning.xlsx');
         } catch (\Exception $e) {
             Log::error('Export Error: ' . $e->getMessage());
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function exportPdf($campaignId)
+    {
+        try {
+            $campaign = Campagne::with(['client', 'creator'])->findOrFail($campaignId);
+            $plannings = Planning::where('id_campaign', $campaignId)
+                ->orderBy('date')
+                ->orderBy('heure')
+                ->get();
+
+            // Fallback for id_campagne if schema uses it instead of id_campaign
+            if ($plannings->isEmpty()) {
+                $plannings = Planning::where('id_campagne', $campaignId)
+                    ->orderBy('date')
+                    ->orderBy('heure')
+                    ->get();
+            }
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('exports.planning_pdf', [
+                'campaign' => $campaign,
+                'plannings' => $plannings
+            ]);
+
+            return $pdf->download("planning_{$campaign->spot}.pdf");
+        } catch (\Exception $e) {
+            Log::error('PDF Export Error: ' . $e->getMessage());
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }

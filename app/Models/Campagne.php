@@ -11,6 +11,10 @@ class Campagne extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'spots' => 'array',
+    ];
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'id_client');
@@ -19,9 +23,13 @@ class Campagne extends Model
     {
         return $this->belongsTo(Categorie::class, 'id_categorie');
     }
-    public function planning()
+    public function plannings()
     {
-        return $this->belongsTo(Planning::class, 'id_planning');
+        return $this->hasMany(Planning::class, 'id_campagne');
     }
 
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

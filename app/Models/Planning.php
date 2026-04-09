@@ -9,15 +9,7 @@ class Planning extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'date',
-        'heure',
-        'spot',
-        'duree',
-        'prix_HT',
-        'id_campagne',
-        'status'
-    ];
+    protected $guarded = [];
 
     public function campagne()
     {

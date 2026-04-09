@@ -34,14 +34,21 @@ public function store(Request $request)
     // 1. Validation remains the same
     $data = $request->validate([
         'name'          => 'required|string|max:255',
+        'contact_name'  => 'nullable|string|max:255',
         'email'         => 'required|email|max:255|unique:clients,email',
-        'campagne_nom'  => 'required|string|max:255',
+        'campagne_nom'  => 'nullable|string|max:255',
         'adresse'       => 'required|string|max:500',
         'telephone'     => 'required|string|max:50',
     ]);
 
-    // 2. Eloquent Insertion (Cleaner and handles created_at/updated_at automatically)
-    $client = Client::create($data); // Make sure 'name', 'email', etc., are in the $fillable array in the Client model
+    // 2. Ensure non-null values for DB constraints (workaround if migration wasn't run)
+    $data['campagne_nom'] = $data['campagne_nom'] ?? '-';
+
+    // 3. Set creator
+    $data['created_by'] = auth()->id();
+
+    // 4. Eloquent Insertion
+    $client = Client::create($data);
 
     // 3. Eloquent returns the created model, no second query needed
     
@@ -82,14 +89,20 @@ public function store(Request $request)
         // Validate only provided fields
         $data = $request->validate([
             'name'          => 'sometimes|string|max:255',
+            'contact_name'  => 'nullable|string|max:255',
             'email'         => ['sometimes', 'email', 'max:255', Rule::unique('clients', 'email')->ignore($client->id)],
-            'campagne_nom'  => 'sometimes|string|max:255',
+            'campagne_nom'  => 'nullable|string|max:255',
             'adresse'       => 'sometimes|string|max:500',
             'telephone'     => 'sometimes|string|max:50',
         ]);
 
         if (empty($data)) {
             return response()->json(['message' => 'No data to update'], 422);
+        }
+
+        // Ensure non-null values for DB constraints
+        if (array_key_exists('campagne_nom', $data)) {
+            $data['campagne_nom'] = $data['campagne_nom'] ?? '-';
         }
 
         // Eloquent handles updated_at automatically
